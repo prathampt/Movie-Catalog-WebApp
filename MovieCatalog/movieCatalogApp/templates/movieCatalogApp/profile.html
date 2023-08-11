@@ -5,7 +5,38 @@
 {% endblock %}
 
 {% block content %}
-
-    <h1>Something</h1>
-    <h3>content.</h3>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-body text-center">
+                    <img src="{% static 'movieCatalogApp/profileIcon.jpg' %}" class="img-fluid rounded-circle mb-3" alt="Profile Picture">
+                    <h4 class="card-title">{{ request.user.username }}</h4>
+                    <p class="card-text">{{ request.user.email }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <h2 class="mb-4">Welcome, {{ request.user.username }}!</h2>
+            <h3 class="mb-3">Your Bookmarked Movies</h3>
+            {% if bookmarks %}
+            <ul class="list-group">
+                {% for bookmark in bookmarks %}
+                <li class="list-group-item">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5 class="mb-1">{{ bookmark.movie.title }}</h5>
+                            <p class="mb-1">Rating: {{ bookmark.movie.rating }}</p>
+                        </div>
+                        <a href="{% url 'movie_detail' bookmark.movie.id %}" class="btn btn-primary btn-sm">Details</a>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p>You haven't bookmarked any movies yet.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
 {% endblock %}
