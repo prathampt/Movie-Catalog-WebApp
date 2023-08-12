@@ -9,6 +9,48 @@
 
     <h1>Movie Catalog Web App</h1>
 
+    <div class="container">
+        <h1>Welcome to Movie Catalog</h1>
+        <form class="form-inline mb-3">
+            <div class="form-group">
+                <label for="genre">Genre:</label>
+                <select class="form-control ml-2" id="genre" name="genre">
+                    <option value="">All Genres</option>
+                    <!-- Add genre options dynamically -->
+                </select>
+            </div>
+            <div class="form-group ml-3">
+                <label for="sort">Sort By:</label>
+                <select class="form-control ml-2" id="sort" name="sort">
+                    <option value="-rating">Top Rated</option>
+                    <option value="release_date">Release Date</option>
+                    <!-- Add more sorting options as needed -->
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary ml-3">Apply Filters</button>
+        </form>
+        <!-- Display filtered and sorted movies -->
+    </div>
+    
+
+    <div class="row">
+        {% for movie in movies %}
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ movie.title }}</h5>
+                    <p class="card-text">{{ movie.genre }}</p>
+                    <p class="card-text">{{ movie.rating }}</p>
+                    <p class="card-text">Release Date: {{ movie.release_date }}</p>
+                    <p class="card-text">{{ movie.description }}</p>
+                    <p class="card-text">{{ movie.director }}</p>
+                    <p class="card-text">{{ movie.duration_minutes }}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
     <ol style="font-weight: bold;">
         <li>Fetch data from API and show in responsive UI.</li>
         <li>Allow users to filter and sort data based on different parameters. E.g. Genre, Rating etc.</li>
