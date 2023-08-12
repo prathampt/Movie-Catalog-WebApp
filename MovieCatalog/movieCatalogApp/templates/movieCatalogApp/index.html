@@ -31,26 +31,20 @@
         </form>
         <!-- Display filtered and sorted movies -->
     </div>
-    
 
-    <div class="row">
+    <div class="row row-cols-1 row-cols-md-2 g-4">
         {% for movie in movies %}
-        <div class="col-md-4 mb-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">{{ movie.title }}</h5>
-                    <p class="card-text">{{ movie.genre }}</p>
-                    <p class="card-text">{{ movie.rating }}</p>
-                    <p class="card-text">Release Date: {{ movie.release_date }}</p>
-                    <p class="card-text">{{ movie.description }}</p>
-                    <p class="card-text">{{ movie.director }}</p>
-                    <p class="card-text">{{ movie.duration_minutes }}</p>
-                </div>
+        <div class="card" style="width: 18rem;">
+            <img src="{{ movie.cover_image}}" class="card-img-top" alt="cover_image">
+            <div class="card-body">
+                <h5 class="card-title">{{ movie.title }}</h5>
+                <p class="card-text">Genre: {{ movie.genre }}</p>
+                <p class="card-text">Rating: {{ movie.rating }}/10</p>
             </div>
         </div>
         {% endfor %}
     </div>
-
+    
     <ol style="font-weight: bold;">
         <li>Fetch data from API and show in responsive UI.</li>
         <li>Allow users to filter and sort data based on different parameters. E.g. Genre, Rating etc.</li>
