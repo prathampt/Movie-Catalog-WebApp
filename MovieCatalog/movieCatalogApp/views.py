@@ -33,7 +33,7 @@ def index(request):
         sorting_options = sorting_options[::-1]
 
     return render(request, 'movieCatalogApp/index.html', {
-        "movies" : movies,
+        "movies" : movies[:20],
         'genres': genres,
         'genre': genre,
         'sorting_options': sorting_options
@@ -52,10 +52,10 @@ def search(request, movie_title):
 
     movie = models.Movie.objects.filter(query).first()
         
-    if not movie:
+    if movie == None:
         movie = utils.fetch_movie_from_omdb(movie_title)
         error = movie.get('error_message')
-        if error != None:
+        if error == None:
             utils.store_movie_to_db(movie)
         else:
             return HttpResponse(error)

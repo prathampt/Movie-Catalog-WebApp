@@ -16,12 +16,12 @@ def fetch_movie_from_omdb(movie_title):
             'description': movie_data['Plot'],
             'director': movie_data['Director'],
             'duration_minutes': int(movie_data['Runtime'].split()[0]),
-            'trailer_url': movie_data['Website'],
-            'cover_image': movie_data['Poster']
+            'cover_image': movie_data['Poster'],
+            'trailer_url': movie_data['Website']
         }
     else:
         context = {
-            'error_message': 'Error fetching movie data from OMDb.',
+            'error_message': 'Error fetching movie data from OMDb.'
         }
 
     return context
