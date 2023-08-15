@@ -20,7 +20,6 @@ def fetch_movie_from_omdb(movie_title):
             'cover_image': movie_data['Poster']
         }
     else:
-        context = None
         context = {
             'error_message': 'Error fetching movie data from OMDb.',
         }

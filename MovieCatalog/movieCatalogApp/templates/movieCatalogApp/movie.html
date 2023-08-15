@@ -5,15 +5,16 @@
 {% endblock %}
 
 {% block content %}
-
-    <h1>{{ movie.title }}</h1>
-    <p><strong>Genre:</strong> {{ movie.genre }}</p>
-    <p><strong>Rating:</strong> {{ movie.rating }}</p>
-    <p><strong>Release Date:</strong> {{ movie.release_date }}</p>
-    <p><strong>Description:</strong> {{ movie.description }}</p>
-    <p><strong>Director:</strong> {{ movie.director }}</p>
-    <p><strong>Duration:</strong> {{ movie.duration_minutes }} minutes</p>
-    <img src="{{ movie.cover_image }}" alt="Movie Poster">
-    <p><a href="{{ movie.trailer_url }}">Watch Trailer</a></p>
+    <div style="padding: 20px;">
+        <h1>{{ movie.title }}</h1>
+        <p><strong>Genre:</strong> {{ movie.genre }}</p>
+        <p><strong>Rating:</strong> {{ movie.rating }}</p>
+        <p><strong>Release Date:</strong> {{ movie.release_date }}</p>
+        <p><strong>Description:</strong> {{ movie.description }}</p>
+        <p><strong>Director:</strong> {{ movie.director }}</p>
+        <p><strong>Duration:</strong> {{ movie.duration_minutes }} minutes</p>
+        <img src="{{ movie.cover_image }}" alt="Movie Poster">
+    </div>
+    
     
 {% endblock %}

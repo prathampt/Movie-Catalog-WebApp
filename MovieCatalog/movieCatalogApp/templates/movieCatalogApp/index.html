@@ -5,31 +5,33 @@
 {% endblock %}
 
 {% block content %}
-    <h1>Something</h1>
-
-    <h1>Movie Catalog Web App</h1>
-
     <div class="container">
         <h1>Welcome to Movie Catalog</h1>
         <form class="form-inline mb-3">
             <div class="form-group">
                 <label for="genre">Genre:</label>
                 <select class="form-control ml-2" id="genre" name="genre">
-                    <option value="">All Genres</option>
-                    <!-- Add genre options dynamically -->
+                    {% if genre %}
+                        <option value="{{ genre }}">{{ genre }}</option>
+                    {% else %}
+                        <option value="">All Genres</option>
+                    {% endif %}
+                    
+                    {% for genre in genres %}
+                        <option value="{{ genre }}">{{ genre }}</option>
+                    {% endfor %}
                 </select>
             </div>
             <div class="form-group ml-3">
                 <label for="sort">Sort By:</label>
                 <select class="form-control ml-2" id="sort" name="sort">
-                    <option value="-rating">Top Rated</option>
-                    <option value="release_date">Release Date</option>
-                    <!-- Add more sorting options as needed -->
+                    {% for value, label in sorting_options %}
+                        <option value="{{ value }}">{{ label }}</option>
+                    {% endfor %}
                 </select>
             </div>
             <button type="submit" class="btn btn-primary ml-3">Apply Filters</button>
         </form>
-        <!-- Display filtered and sorted movies -->
     </div>
 
     <div class="row row-cols-1 row-cols-md-2 g-4">
@@ -44,12 +46,5 @@
         </div>
         {% endfor %}
     </div>
-    
-    <ol style="font-weight: bold;">
-        <li>Fetch data from API and show in responsive UI.</li>
-        <li>Allow users to filter and sort data based on different parameters. E.g. Genre, Rating etc.</li>
-        <li>(Bonus): allow users to create accounts and bookmark, rate movies.</li>
-        <li>(Bonus): Good UI & Creativity</li>
-    </ol>
     
 {% endblock %}
