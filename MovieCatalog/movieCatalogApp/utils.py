@@ -8,16 +8,26 @@ def fetch_movie_from_omdb(movie_title):
         
     if response.status_code == 200:
         movie_data = response.json()
-        context = {
-            'title': movie_data['Title'],
-            'genre': movie_data['Genre'],
-            'rating': float(movie_data['imdbRating']),
-            'release_date': movie_data['Released'],
-            'description': movie_data['Plot'],
-            'director': movie_data['Director'],
-            'duration_minutes': int(movie_data['Runtime'].split()[0]),
-            'cover_image': movie_data['Poster'],
-            'trailer_url': movie_data['Website']
+        if movie_data['Response'] == "True":
+            try:
+                context = {
+                    'title': movie_data['Title'],
+                    'genre': movie_data['Genre'],
+                    'rating': float(movie_data['imdbRating']),
+                    'release_date': movie_data['Released'],
+                    'description': movie_data['Plot'],
+                    'director': movie_data['Director'],
+                    'duration_minutes': int(movie_data['Runtime'].split()[0]),
+                    'cover_image': movie_data['Poster'],
+                    'trailer_url': movie_data['Website']
+                }
+            except Exception as e:
+                context = {
+            'error_message': 'Movie is not availabe on server right now.'
+        }
+        else:
+            context = {
+            'error_message': 'Movie is not availabe on server right now.'
         }
     else:
         context = {

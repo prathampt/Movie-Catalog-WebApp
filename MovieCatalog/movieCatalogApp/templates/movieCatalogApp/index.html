@@ -1,5 +1,5 @@
 {% extends 'movieCatalogApp/layout.html' %}
-
+{% load static %}
 {% block title %}
     Index
 {% endblock %}
@@ -8,9 +8,9 @@
     <div class="container">
         <h1 class="my-4">Welcome to Movie Catalog</h1>
         <form class="form-inline mb-4">
-            <div class="form-group">
-                <label for="genre">Genre:</label>
-                <select class="form-control ml-2" id="genre" name="genre">
+            <div class="form-group mr-md-4 mb-2">
+                <label for="genre" class="mr-2" style="font-weight: bold;">Genre:</label>
+                <select class="form-control shadow" id="genre" name="genre">
                     {% if genre %}
                         <option value="{{ genre }}">{{ genre }}</option>
                     {% else %}
@@ -22,30 +22,35 @@
                     {% endfor %}
                 </select>
             </div>
-            <div class="form-group ml-md-4">
-                <label for="sort">Sort By:</label>
-                <select class="form-control ml-2" id="sort" name="sort">
+            <div class="form-group mr-md-4 mb-2">
+                <label for="sort" class="mr-2" style="font-weight: bold;">Sort By:</label>
+                <select class="form-control shadow" id="sort" name="sort">
                     {% for value, label in sorting_options %}
                         <option value="{{ value }}">{{ label }}</option>
                     {% endfor %}
                 </select>
             </div>
-            <button type="submit" class="btn btn-primary ml-3">Apply Filters</button>
+            <div style="padding-top: 10px;">
+                <button type="submit" class="btn btn-dark mb-2 shadow">Apply Filters</button>
+            </div>
+            
         </form>
     </div>
 
     <div class="container">
-        <div class="row row-cols-1 row-cols-md-3 g-4">
+        <div class="row row-cols-1 row-cols-md-4 g-4">
             {% for movie in movies %}
             <div class="col mb-4">
-                <div class="card h-100 shadow">
-                    <img src="{{ movie.cover_image }}" class="card-img-top" alt="cover_image">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ movie.title }}</h5>
-                        <p class="card-text">Genre: {{ movie.genre }}</p>
-                        <p class="card-text">Rating: {{ movie.rating }}/10</p>
+                <a href="movie/{{ movie.title }}" class="card-link" style="text-decoration: none;">
+                    <div class="card h-100 shadow hover">
+                        <img src="{{ movie.cover_image }}" class="card-img-top" alt="cover_image">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ movie.title }}</h5>
+                            <p class="card-text">Genre: {{ movie.genre }}</p>
+                            <p class="card-text">Rating: {{ movie.rating }}/10</p>
+                        </div>
                     </div>
-                </div>
+                </a>
             </div>
             {% endfor %}
         </div>

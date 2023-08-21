@@ -5,15 +5,31 @@
 {% endblock %}
 
 {% block content %}
-    <div style="padding: 20px;">
-        <h1>{{ movie.title }}</h1>
-        <p><strong>Genre:</strong> {{ movie.genre }}</p>
-        <p><strong>Rating:</strong> {{ movie.rating }}</p>
-        <p><strong>Release Date:</strong> {{ movie.release_date }}</p>
-        <p><strong>Description:</strong> {{ movie.description }}</p>
-        <p><strong>Director:</strong> {{ movie.director }}</p>
-        <p><strong>Duration:</strong> {{ movie.duration_minutes }} minutes</p>
-        <img src="{{ movie.cover_image }}" alt="Movie Poster">
+    <div class="container my-4">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <img src="{{ movie.cover_image }}" class="card-img-top" alt="Movie Poster">
+                    <div class="card-img-overlay d-flex align-items-end">
+                        <div class="p-3 text-white">
+                            <h5 class="card-title">{{ movie.title }}</h5>
+                            <p class="card-text">{{ movie.genre }}</p>
+                            <p class="card-text">Rating: {{ movie.rating }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="p-4">
+                    <h1>{{ movie.title }}</h1>
+                    <p><strong>Genre:</strong> {{ movie.genre }}</p>
+                    <p><strong>Rating:</strong> {{ movie.rating }}</p>
+                    <p><strong>Release Date:</strong> {{ movie.release_date }}</p>
+                    <p><strong>Description:</strong> {{ movie.description }}</p>
+                    <p><strong>Director:</strong> {{ movie.director }}</p>
+                    <p><strong>Duration:</strong> {{ movie.duration_minutes }} minutes</p>
+                </div>
+            </div>
+        </div>
     </div>
-       
 {% endblock %}

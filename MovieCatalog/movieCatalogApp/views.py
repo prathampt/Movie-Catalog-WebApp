@@ -1,11 +1,16 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django import forms
 from . import utils, models
 from django.http import HttpResponse
 from django.db.models import Q
+from django.contrib.auth import login, authenticate
+from .forms import RegistrationForm
 
 class form(forms.Form):
     movie = forms.CharField(max_length=100)
+
+def signup(request):
+    return render(request, 'movieCatalogApp/signUp.html')
 
 def index(request):
     genres_mixed = models.Movie.objects.values_list('genre', flat=True).distinct()
@@ -33,7 +38,7 @@ def index(request):
         sorting_options = sorting_options[::-1]
 
     return render(request, 'movieCatalogApp/index.html', {
-        "movies" : movies[:20],
+        "movies" : movies[:18],
         'genres': genres,
         'genre': genre,
         'sorting_options': sorting_options
@@ -71,3 +76,16 @@ def searchBox(request):
         if movie.is_valid():
             movie_title = request.POST['movie']
     return search(request, movie_title)
+
+def registration(request):
+    if request.method == 'POST':
+        form = RegistrationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user) 
+            return redirect('index')
+    else:
+        form = RegistrationForm()
+    
+    return render(request, 'movieCatalogApp/registration.html', {'form': form})
+
