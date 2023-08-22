@@ -27,7 +27,9 @@
                     {% for bookmark in user_bookmarks %}
                         <li>{{ bookmark.movie.title }} - {{ bookmark.rating }}/5
                             {% if not bookmark.watched %}
-                                <a href="{% url 'mark_as_watched' bookmark.id %}">Mark as Watched</a> |
+                                <a href="{% url 'mark_as_watched' bookmark.id %}">Mark as Watched</a>
+                            {% else %}
+                                Already Watched
                             {% endif %}
                             <a href="{% url 'remove_bookmark' bookmark.id %}">Remove Bookmark</a>
                         </li>

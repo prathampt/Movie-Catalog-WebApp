@@ -1,16 +1,17 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django import forms
 from . import utils, models
-from django.http import HttpResponse, HttpResponseBadRequest
+from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseRedirect
 from django.db.models import Q
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 from .forms import RegistrationForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from .models import Movie, UserBookmark
 from django.contrib import messages
-
+from django.contrib.auth import views as auth_views
+from django.urls import reverse
 
 
 class form(forms.Form):
@@ -45,7 +46,7 @@ def index(request):
         sorting_options = sorting_options[::-1]
 
     return render(request, 'movieCatalogApp/index.html', {
-        "movies" : movies[:18],
+        "movies" : movies[:20],
         'genres': genres,
         'genre': genre,
         'sorting_options': sorting_options
@@ -58,7 +59,7 @@ def search(request, movie_title):
 
     query = Q()
     for name in split:
-        query &= Q(title__iexact=name)
+        query &= Q(title__icontains=name)
 
     movie = models.Movie.objects.filter(query).first()
         
@@ -123,8 +124,10 @@ def add_bookmark(request, movie_id=1):
             user=user, movie=movie, rating=rating, comments=comments
         )
         user_bookmark.save()
+    
+    search_url = reverse("search", kwargs={"movie_title": movie.title})
 
-    return redirect("search", movie_title=movie.title, movie_id=movie_id)
+    return HttpResponseRedirect(search_url)
 
 @login_required
 def mark_as_watched(request, bookmark_id):
@@ -155,3 +158,7 @@ def add_bookmark_guest(request, movie_id):
         return redirect('registration')
     
     return add_bookmark(request, movie_id)
+
+def user_logout(request):
+    logout(request)
+    return redirect('login')
