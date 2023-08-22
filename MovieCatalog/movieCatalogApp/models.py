@@ -16,7 +16,7 @@ class Movie(models.Model):
         return f"{self.title} {self.rating}/10"
 
 class UserBookmark(models.Model):
-    user = models.ForeignKey('auth.User', on_delete=models.CASCADE)#-----------------
+    user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
     rating = models.PositiveIntegerField(choices=[(1, '1 Star'), (2, '2 Stars'), (3, '3 Stars'), (4, '4 Stars'), (5, '5 Stars')])
     comments = models.TextField(blank=True)

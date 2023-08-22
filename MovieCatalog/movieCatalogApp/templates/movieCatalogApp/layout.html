@@ -20,12 +20,15 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/">Home</a>
                     </li>
+                    {% if user.is_authenticated %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'profile' %}">Profile</a>
                     </li>
+                    {% else %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'registration' %}">Register</a>
                     </li>
+                    {% endif %}
                     <li class="nav-item">
                         <div class="container-fluid">
                             <form class="d-flex" method="post" action="{% url 'searchBox' %}">

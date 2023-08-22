@@ -1,10 +1,17 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django import forms
 from . import utils, models
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseBadRequest
 from django.db.models import Q
 from django.contrib.auth import login, authenticate
 from .forms import RegistrationForm
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.decorators import login_required
+from django.utils import timezone
+from .models import Movie, UserBookmark
+from django.contrib import messages
+
+
 
 class form(forms.Form):
     movie = forms.CharField(max_length=100)
@@ -43,17 +50,15 @@ def index(request):
         'genre': genre,
         'sorting_options': sorting_options
     })
-
-def profile(request):
-    return render(request, 'movieCatalogApp/profile.html')
     
 def search(request, movie_title):
+    start = False
     movie = None
     split = movie_title.strip().split(" ")
 
     query = Q()
     for name in split:
-        query |= Q(title__icontains=name)
+        query &= Q(title__iexact=name)
 
     movie = models.Movie.objects.filter(query).first()
         
@@ -62,12 +67,14 @@ def search(request, movie_title):
         error = movie.get('error_message')
         if error == None:
             utils.store_movie_to_db(movie)
+            start = True
         else:
             return HttpResponse(error)
 
 
     return render(request, 'movieCatalogApp/movie.html', {
-        "movie" : movie
+        "movie" : movie,
+        "start" : start
         })
     
 def searchBox(request):
@@ -83,9 +90,68 @@ def registration(request):
         if form.is_valid():
             user = form.save()
             login(request, user) 
-            return redirect('index')
+            return redirect('profile')
     else:
         form = RegistrationForm()
     
     return render(request, 'movieCatalogApp/registration.html', {'form': form})
 
+def user_login(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            return redirect('profile')
+    else:
+        form = AuthenticationForm()
+    return render(request, 'movieCatalogApp/login.html', {'form': form})
+
+@login_required
+def add_bookmark(request, movie_id=1):
+    movie = get_object_or_404(Movie, pk=movie_id)
+    user = request.user
+
+    if UserBookmark.objects.filter(user=user, movie=movie).exists():
+        return HttpResponseBadRequest("You have already bookmarked this movie.")
+
+    if request.method == 'POST':
+        rating = request.POST.get('rating')
+        comments = request.POST.get('comments')
+
+        user_bookmark = UserBookmark.objects.create(
+            user=user, movie=movie, rating=rating, comments=comments
+        )
+        user_bookmark.save()
+
+    return redirect("search", movie_title=movie.title, movie_id=movie_id)
+
+@login_required
+def mark_as_watched(request, bookmark_id):
+    bookmark = get_object_or_404(UserBookmark, pk=bookmark_id)
+
+    if bookmark.user == request.user:
+        bookmark.watched = True
+        bookmark.watched_at = timezone.now()
+        bookmark.save()
+
+    return redirect('profile')
+
+@login_required
+def profile(request):
+    user_bookmarks = UserBookmark.objects.filter(user=request.user)
+    return render(request, 'movieCatalogApp/profile.html', {'user_bookmarks': user_bookmarks})
+
+@login_required
+def remove_bookmark(request, bookmark_id):
+    bookmark = UserBookmark.objects.get(id=bookmark_id)
+    if bookmark.user == request.user:
+        bookmark.delete()
+    return redirect('profile')
+
+def add_bookmark_guest(request, movie_id):
+    if not request.user.is_authenticated:
+        messages.info(request, "Please register to bookmark movies.")
+        return redirect('registration')
+    
+    return add_bookmark(request, movie_id)

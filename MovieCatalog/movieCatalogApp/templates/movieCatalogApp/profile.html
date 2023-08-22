@@ -21,19 +21,18 @@
         <div class="col-md-8">
             <h2 class="mb-4">Welcome, {{ request.user.username }}!</h2>
             <h3 class="mb-3">Your Bookmarked Movies</h3>
-            {% if bookmarks %}
+            {% if user_bookmarks %}
             <ul class="list-group">
-                {% for bookmark in bookmarks %}
-                <li class="list-group-item">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h5 class="mb-1">{{ bookmark.movie.title }}</h5>
-                            <p class="mb-1">Rating: {{ bookmark.movie.rating }}</p>
-                        </div>
-                        <a href="{% url 'movie_detail' bookmark.movie.id %}" class="btn btn-primary btn-sm">Details</a>
-                    </div>
-                </li>
-                {% endfor %}
+                <ul>
+                    {% for bookmark in user_bookmarks %}
+                        <li>{{ bookmark.movie.title }} - {{ bookmark.rating }}/5
+                            {% if not bookmark.watched %}
+                                <a href="{% url 'mark_as_watched' bookmark.id %}">Mark as Watched</a> |
+                            {% endif %}
+                            <a href="{% url 'remove_bookmark' bookmark.id %}">Remove Bookmark</a>
+                        </li>
+                    {% endfor %}
+                </ul>
             </ul>
             {% else %}
             <p>You haven't bookmarked any movies yet.</p>

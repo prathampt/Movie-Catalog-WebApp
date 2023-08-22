@@ -29,6 +29,27 @@
                     <p><strong>Director:</strong> {{ movie.director }}</p>
                     <p><strong>Duration:</strong> {{ movie.duration_minutes }} minutes</p>
                 </div>
+                {% if not start %}
+                    <form method="post" action="{% url 'add_bookmark' movie.id %}">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="rating" class="form-label">Rating:</label>
+                            <select class="form-select" id="rating" name="rating">
+                                <option value="1">1 Star</option>
+                                <option value="2">2 Stars</option>
+                                <option value="3">3 Stars</option>
+                                <option value="4">4 Stars</option>
+                                <option value="5">5 Stars</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="comments" class="form-label">Comments:</label>
+                            <textarea class="form-control" id="comments" name="comments" rows="3"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-dark">Bookmark</button>
+                    </form>
+                {% endif %}
+                
             </div>
         </div>
     </div>
