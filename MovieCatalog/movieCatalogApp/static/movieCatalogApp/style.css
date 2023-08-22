@@ -5,36 +5,3 @@
     text-decoration: none;
 }
 
-/* #hovering {
-    transition: transform 0.3s ease-in-out;
-}
-
-#hovering:hover {
-    transform: scale(2);
-}
-
-
-.btn-primary:hover {
-    background-color: #121314;
-    border-color: #e0e6ec;
-}
-
-.form-control:focus {
-    box-shadow: 0 0 0.25rem rgba(209, 12, 12, 0.25);
-}
-
-label,
-.btn {
-    font-weight: bold;
-}
-
-.btn-primary {
-    background-color: #011201;
-    border-color: 2px solid #f3f8f9;
-
-}
-.bgcolor{
-    background-color: black;
-    color:white;
-   
-} */
